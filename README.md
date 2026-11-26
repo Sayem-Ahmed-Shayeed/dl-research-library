@@ -19,6 +19,8 @@ Claude answers from the book text and cites where it came from. When the books d
 | `library/INDEX.md` | Every chapter of every book with its section titles |
 | `library/<book>/` | Full chapter text, **built locally** from the books (not included in this repo; see Setup) |
 | `scripts/search.py` | BM25 search over chapters with matching lines |
+| `scripts/page.py` | Renders a book's PDF page to an image, so Claude can read equations and figures as printed |
+| `scripts/books.py` | The list of books (edit this to add one) |
 | `scripts/build_library.py` | Splits the books into chapter files and rebuilds `INDEX.md` |
 | `scripts/html2md.py` | Converts the two web-only books from HTML |
 
@@ -62,6 +64,9 @@ python3 ~/.claude/skills/dl-research-library/scripts/html2md.py \
 
 # 4. Build the chapter library
 python3 ~/.claude/skills/dl-research-library/scripts/build_library.py ~/dl-books ~/.claude/skills/dl-research-library
+
+# 5. Tell the page viewer where your PDFs are (for reading equations as printed)
+echo ~/dl-books > ~/.claude/skills/dl-research-library/books_dir.txt
 ```
 
 Restart Claude Code. The skill triggers automatically on ML/DL/CV/NLP theory questions, or you can ask for it by name.
@@ -85,7 +90,7 @@ Contributions are welcome: new freely available books, better notes, better extr
 
 ## Notes
 
-- Text is extracted from PDFs/HTML, so equations come out flattened. For anything that depends on an exact formula, check the cited PDF page.
+- Text is extracted from PDFs/HTML, so equations come out flattened. The skill handles this by rendering the cited PDF page from your local copy (`scripts/page.py`) and reading the equation from the image. The PDFs are never uploaded, which keeps this repo small (the 14 books total about 425 MB).
 - Copyright of each book remains with its authors and publishers. This repo contains only the skill, notes, scripts and a table-of-contents index, not the books themselves.
 
 ## License

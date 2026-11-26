@@ -33,11 +33,17 @@ Everything lives next to this file:
    ```
    Quote phrases in the query for a phrase bonus; `-b` restricts to book folders; `-n` lines per hit.
 3. Open only the needed part of a chapter: use the line numbers from search output with `Read` offset/limit (chapters are 2k–20k lines; never read a whole chapter unless asked). The `## Sections` block at the top of the file maps sections to PDF pages.
-4. Answer from the book text, and cite it as *Book, chapter/section (PDF p. N)* so the user can check it. Prefer the clearest source for explanations (Prince, Torralba, D2L) and the most rigorous for derivations (Bishop, Murphy, Goodfellow).
-5. If the library does not cover something (post-2025 methods, specific recent papers, YOLO/DETR/SAM details), say so and fall back to web search or papers rather than guessing.
+4. **Equations and figures:** extracted text flattens math. When an equation, derivation or figure matters, render the printed page and look at it:
+   ```bash
+   python3 ~/.claude/skills/dl-research-library/scripts/page.py prince-udl 360        # one page
+   python3 ~/.claude/skills/dl-research-library/scripts/page.py bishop-prml 480-481   # a range (max 10)
+   ```
+   The page number is the PDF page from the `<!-- page N -->` marker above the passage. The script prints PNG paths; open them with `Read` and transcribe the equation from the image. Web books (Torralba, Goodfellow) have no PDF: link the chapter on their website instead.
+5. Answer from the book text, and cite it as *Book, chapter/section (PDF p. N)* so the user can check it. Prefer the clearest source for explanations (Prince, Torralba, D2L) and the most rigorous for derivations (Bishop, Murphy, Goodfellow).
+6. If the library does not cover something (post-2025 methods, specific recent papers, YOLO/DETR/SAM details), say so and fall back to web search or papers rather than guessing.
 
 ## Notes on text quality
-- Text was extracted with PyMuPDF/pdftotext and from HTML; equations are flattened (subscripts on separate lines, symbols sometimes lost). When an equation matters, reconstruct it carefully and cross-check a second book, or point the user to the PDF page.
+- Text was extracted with PyMuPDF/pdftotext and from HTML; equations are flattened (subscripts on separate lines, symbols sometimes lost). When an equation matters, render the page with `scripts/page.py` (step 4) instead of reconstructing it from the text.
 - Prince files are numbered from the PDF outline, so `prince-udl/18-variational-autoencoders.md` is the book's chapter 17. Use the title, not the number.
 - The chapter files are built locally from the source books (see README.md). If `library/<book>/` folders are missing, tell the user to run the setup in README.md, and meanwhile answer from `notes/` and `library/INDEX.md`. The web books (Torralba, Goodfellow) come from visionbook.mit.edu and deeplearningbook.org.
 

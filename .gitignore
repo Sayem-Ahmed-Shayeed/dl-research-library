@@ -2,3 +2,5 @@
 library/*/
 __pycache__/
 *.pyc
+# Local path to your book PDFs (used by scripts/page.py)
+books_dir.txt

@@ -21,7 +21,7 @@ Thanks for helping. This skill is meant to make Claude a better companion for th
 ## Adding a book
 
 1. Fork the repo and create a branch.
-2. Add an entry to `BOOKS` (PDF) or `WEB` (HTML) in `scripts/build_library.py`: `"File-Base-Name": ("slug", "Author, Title (Year)")`.
+2. Add an entry to `BOOKS` (PDF) or `WEB` (HTML) in `scripts/books.py`: `"File-Base-Name": ("slug", "Author, Title (Year)")` (web books also take the website URL).
 3. Add a row to the book table in `README.md` with the official link and the filename to save it as.
 4. Build it locally and check that the chapters split sensibly:
    ```bash
