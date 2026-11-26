@@ -79,7 +79,15 @@ Search directly from the shell:
 python3 ~/.claude/skills/dl-research-library/scripts/search.py '"classifier-free guidance" diffusion' -k 5
 ```
 
+## Contributing
+
+Contributions are welcome: new freely available books, better notes, better extraction or search. See [CONTRIBUTING.md](CONTRIBUTING.md). Open an issue to suggest a book.
+
 ## Notes
 
 - Text is extracted from PDFs/HTML, so equations come out flattened. For anything that depends on an exact formula, check the cited PDF page.
 - Copyright of each book remains with its authors and publishers. This repo contains only the skill, notes, scripts and a table-of-contents index, not the books themselves.
+
+## License
+
+MIT for the skill, notes and scripts (see [LICENSE](LICENSE)). The books are not covered.
