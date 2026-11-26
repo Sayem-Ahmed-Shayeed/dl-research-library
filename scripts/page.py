@@ -14,10 +14,12 @@ Examples:
 The PDFs are looked up in the books folder, in this order:
   --books DIR, $DL_BOOKS_DIR, the path written in <skill>/books_dir.txt, ~/dl-books
 (each folder is searched directly and in its Books/ subfolder).
-Prints the path of every PNG written. Web-only books print their website instead.
+Prints the path of every PNG written. If the PDF is not available locally, or the book is
+web-only, prints a link to the official online copy at that page instead.
 """
 import argparse, os, sys, tempfile
-from books import BOOKS, WEB
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from books import BOOKS, WEB, ONLINE
 
 SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -35,6 +37,19 @@ def books_dirs(arg):
     return [os.path.expanduser(d) for d in dirs if d]
 
 
+def online(slug, pages, reason):
+    pdf_url, site = ONLINE.get(slug, (None, None))
+    page = pages.partition("-")[0]
+    print(reason)
+    if pdf_url:
+        print(f"ONLINE: {pdf_url}#page={page}")
+    else:
+        print(f"ONLINE: {site}  (download the PDF there and go to PDF page {page})")
+    print("Online editions can be newer than the one indexed, so the page may be off by a few; "
+          "search for the section title. To render pages locally, set DL_BOOKS_DIR or write your "
+          "books folder into " + os.path.join(SKILL, "books_dir.txt"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("slug")
@@ -46,7 +61,8 @@ def main():
 
     for base, (slug, disp, url) in WEB.items():
         if slug == a.slug:
-            sys.exit(f"{disp} is a web book with no PDF. See the chapter on {url}")
+            print(f"{disp} is a web book with no PDF. ONLINE: {url} (open the chapter named in the file header)")
+            return
 
     base = next((b for b, (s, _) in BOOKS.items() if s == a.slug), None)
     if base is None:
@@ -63,13 +79,17 @@ def main():
             continue
         break
     else:
-        sys.exit(f"{base}.pdf not found. Tried:\n  " + "\n  ".join(tried) +
-                 "\nSet DL_BOOKS_DIR or write your books folder path into " + os.path.join(SKILL, "books_dir.txt"))
+        online(a.slug, a.pages, "No local PDF for %s (looked in: %s)." % (a.slug, ", ".join(books_dirs(a.books))))
+        return
 
     try:
         import pymupdf
     except ImportError:
-        import fitz as pymupdf
+        try:
+            import fitz as pymupdf
+        except ImportError:
+            online(a.slug, a.pages, "PyMuPDF is not installed (pip install pymupdf), so pages cannot be rendered.")
+            return
     doc = pymupdf.open(pdf)
     lo, _, hi = a.pages.partition("-")
     lo, hi = int(lo), int(hi or lo)

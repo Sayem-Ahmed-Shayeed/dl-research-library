@@ -38,7 +38,7 @@ Everything lives next to this file:
    python3 ~/.claude/skills/dl-research-library/scripts/page.py prince-udl 360        # one page
    python3 ~/.claude/skills/dl-research-library/scripts/page.py bishop-prml 480-481   # a range (max 10)
    ```
-   The page number is the PDF page from the `<!-- page N -->` marker above the passage. The script prints PNG paths; open them with `Read` and transcribe the equation from the image. Web books (Torralba, Goodfellow) have no PDF: link the chapter on their website instead.
+   The page number is the PDF page from the `<!-- page N -->` marker above the passage. The script prints PNG paths; open them with `Read` and transcribe the equation from the image. If the user has no local PDF (or the book is web-only: Torralba, Goodfellow), the script prints an `ONLINE:` link to the official copy at that page instead. Give the user that link together with the section title and equation number, and say the equation should be checked there. Never present a garbled equation as exact.
 5. Answer from the book text, and cite it as *Book, chapter/section (PDF p. N)* so the user can check it. Prefer the clearest source for explanations (Prince, Torralba, D2L) and the most rigorous for derivations (Bishop, Murphy, Goodfellow).
 6. If the library does not cover something (post-2025 methods, specific recent papers, YOLO/DETR/SAM details), say so and fall back to web search or papers rather than guessing.
 

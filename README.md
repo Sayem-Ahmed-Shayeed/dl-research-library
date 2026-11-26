@@ -90,7 +90,7 @@ Contributions are welcome: new freely available books, better notes, better extr
 
 ## Notes
 
-- Text is extracted from PDFs/HTML, so equations come out flattened. The skill handles this by rendering the cited PDF page from your local copy (`scripts/page.py`) and reading the equation from the image. The PDFs are never uploaded, which keeps this repo small (the 14 books total about 425 MB).
+- Text is extracted from PDFs/HTML, so equations come out flattened. When an equation matters, the skill renders the cited PDF page from your local copy (`scripts/page.py`) and reads the equation from the image. Without a local copy, it links you to the official online edition at that page (e.g. `https://arxiv.org/pdf/2104.13478#page=42`); online editions can be slightly newer, so page numbers may shift a little. The PDFs are never uploaded, which keeps this repo small (the 14 books total about 425 MB).
 - Copyright of each book remains with its authors and publishers. This repo contains only the skill, notes, scripts and a table-of-contents index, not the books themselves.
 
 ## License
