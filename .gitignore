@@ -1,0 +1,4 @@
+# Extracted book text is built locally (see README.md) and not redistributed.
+library/*/
+__pycache__/
+*.pyc
